@@ -1,85 +1,80 @@
 <template>
-  <div class="menu">
-    <a-menu mode="inline" :open-keys="openKeys" theme="dark" :style="{ height: '100%', borderRight: 0 }" @openChange="onOpenChange">
-      <a-sub-menu key="sub1">
-        <span slot="title"><a-icon type="mail" /><span>Navigation One</span></span>
-        <a-menu-item key="1">
-          Option 1
-        </a-menu-item>
-        <a-menu-item key="2">
-          Option 2
-        </a-menu-item>
-        <a-menu-item key="3">
-          Option 3
-        </a-menu-item>
-        <a-menu-item key="4">
-          Option 4
-        </a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="sub2">
-        <span slot="title"><a-icon type="appstore" /><span>Navigation Two</span></span>
-        <a-menu-item key="5">
-          Option 5
-        </a-menu-item>
-        <a-menu-item key="6">
-          Option 6
-        </a-menu-item>
-        <a-sub-menu key="sub3" title="Submenu">
-          <a-menu-item key="7">
-            Option 7
-          </a-menu-item>
-          <a-menu-item key="8">
-            Option 8
-          </a-menu-item>
-        </a-sub-menu>
-      </a-sub-menu>
-      <a-sub-menu key="sub4">
-        <span slot="title"><a-icon type="setting" /><span>Navigation Three</span></span>
-        <a-menu-item key="9">
-          Option 9
-        </a-menu-item>
-        <a-menu-item key="10">
-          Option 10
-        </a-menu-item>
-        <a-menu-item key="11">
-          Option 11
-        </a-menu-item>
-        <a-menu-item key="12">
-          Option 12
-        </a-menu-item>
-      </a-sub-menu>
-    </a-menu>
-  </div>
+	<div class="menu">
+		<a-menu mode="inline" :open-keys="openKeys" theme="dark" :style="{ height: '100%', borderRight: 0 }" @openChange="onOpenChange">
+			<a-sub-menu v-for="item in menuKist" :key="item.index">
+				<!-- <span slot="title">
+					<a-icon type="mail" /><span>Navigation One</span></span> -->
+				<span slot="title">
+					<span>{{item.name}}</span>
+				</span>
+				
+				<template v-if="item.children">
+					<a-menu-item v-for="item1 in item.children" :key="item1.index">
+						{{item1.name}}
+					</a-menu-item>
+				</template>
+				
+				
+			</a-sub-menu>
+		</a-menu>
+	</div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
-      openKeys: ['sub1'],
-    };
-  },
-  methods: {
-    onOpenChange(openKeys) {
-      const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1);
-      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-        this.openKeys = openKeys;
-      } else {
-        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
-      }
-    },
-  },
-};
+	export default {
+		data() {
+			return {
+				rootSubmenuKeys: [1,2,5,8],
+				openKeys: [1],
+				menuKist: [{
+					index: 1,
+					name: "首页"
+				}, {
+					index: 2,
+					name: "用户管理",
+					children: [{
+						index: 3,
+						name: "用户列表",
+					}, {
+						index: 4,
+						name: "达人推荐列表",
+					}]
+				}, {
+					index: 5,
+					name: "文章管理",
+					children: [{
+						index: 6,
+						name: "文章列表",
+					}, {
+						index: 7,
+						name: "回复消息",
+					}]
+				}, {
+					index: 8,
+					name: "外链管理"
+				}, ]
+			};
+		},
+		methods: {
+			onOpenChange(openKeys) {
+				const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1);
+				if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+					this.openKeys = openKeys;
+				} else {
+					this.openKeys = latestOpenKey ? [latestOpenKey] : [];
+				}
+			},
+		},
+	};
 </script>
 
 
 <style lang="scss" scoped>
-    .menu{
-        .ant-menu{
-            height: 100vw;
-            position: fixed;
-            left: 0;
-            max-width: 200px;
-        }
-    }
+	.menu {
+		.ant-menu {
+			height: 100vw;
+			position: fixed;
+			left: 0;
+			max-width: 200px;
+		}
+	}
 </style>
